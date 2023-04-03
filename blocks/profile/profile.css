@@ -3,7 +3,7 @@
   width: 100%;
   margin: 0 auto;
   padding-top: 40px;
-  padding-bottom: 50px;
+  padding-bottom: 48px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -28,10 +28,9 @@
   .profile {
     max-width: 282px;
     width: calc(100% - 38px);
-    padding-top: 42px;
     padding-bottom: 36px;
     flex-direction: column;
-    gap: 36px;
+    gap: 33px;
   }
 }
 
