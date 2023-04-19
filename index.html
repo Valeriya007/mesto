@@ -30,7 +30,7 @@
   <footer class="footer">
     <p class="footer__copyright">&copy;&nbsp;2023. Mesto Russia</p>
   </footer>
-  <section class="popup popup_type_profile">
+  <section class="popup popup_content_profile">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_profile" type="button"></button>
       <form class="popup__form popup__form_profile" name="form">
@@ -41,21 +41,19 @@
       </form>
     </div>
   </section>
-
-  <section class="popup popup_type_card">
+  <section class="popup popup_content_card">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_card" type="button"></button>
       <form class="popup__form popup__form_card" name="form">
         <h3 class="popup__title">Новое место</h3>
         <input class="popup__text popup__text_type_name-card" type="text" name="namecardInput" placeholder="Название" value required>
         <input class="popup__text popup__text_type_info-card" type="text" name="infocardInput" placeholder="Ссылка на картинку" value required>
-        <button class="popup__btn-save" type="submit">Сохранить</button>
+        <button class="popup__btn-save" type="submit">Создать</button>
       </form>
     </div>
   </section>
-
-  <section class="popup popup_type_image">
-    <div class="popup__image-container">
+  <section class="popup popup_content_image">
+    <div class="popup__box">
       <button class="popup__btn-close popup__btn-close_image" type="button"></button>
       <figure class="popup__figure">
         <img src="#" alt="#" class="popup__image">
@@ -63,7 +61,6 @@
       </figure>
     </div>
   </section>
-
   <template class="card-template">
     <article class="card">
       <button class="card__delete-btn" type="button"></button>
@@ -74,8 +71,7 @@
       </div>
     </article>
   </template>
-
+  <script src="./scripts/constants.js"></script>
   <script src="./scripts/index.js"></script>
 </body>
 </html>
-
