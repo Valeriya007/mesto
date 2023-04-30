@@ -30,24 +30,42 @@
   <footer class="footer">
     <p class="footer__copyright">&copy;&nbsp;2023. Mesto Russia</p>
   </footer>
+
   <section class="popup popup_content_profile">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_profile" type="button"></button>
-      <form class="popup__form popup__form_profile" name="form">
+      <form class="popup__form popup__form_profile" name="form" novalidate>
         <h3 class="popup__title">Редактировать профиль</h3>
-        <input class="popup__text popup__text_type_name" type="text" name="nameInput" placeholder="Имя" value required>
-        <input class="popup__text popup__text_type_info" type="text" name="infoInput" placeholder="Занятие" value required>
+        <div class="popup__field">
+          <input id="username" class="popup__input popup__input_type_name" type="text"
+          name="username" placeholder="Имя" minlength="2" maxlength="40" required>
+          <span id="error-username" class="popup__error popup__error_type_username"></span>
+        </div>
+        <div class="popup__field">
+          <input id="info" class="popup__input popup__input_type_info" type="text"
+          name="info" placeholder="О себе" minlength="2" maxlength="200" required>
+          <span id="error-info" class="popup__error popup__error_type_info"></span>
+        </div>
         <button class="popup__btn-save" type="submit">Сохранить</button>
       </form>
     </div>
   </section>
+
   <section class="popup popup_content_card">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_card" type="button"></button>
-      <form class="popup__form popup__form_card" name="form">
+      <form class="popup__form popup__form_card" name="form" novalidate>
         <h3 class="popup__title">Новое место</h3>
-        <input class="popup__text popup__text_type_name-card" type="text" name="namecardInput" placeholder="Название" value required>
-        <input class="popup__text popup__text_type_info-card" type="text" name="infocardInput" placeholder="Ссылка на картинку" value required>
+        <div class="popup__field">
+          <input id="title" class="popup__input popup__input_type_title" type="text"
+          name="title" placeholder="Название" minlength="2" maxlength="30" required>
+          <span id="error-title" class="popup__error popup__error_type_title"></span>
+        </div>
+        <div class="popup__field">
+          <input id="url" class="popup__input popup__input_type_url" type="url"
+          name="url" placeholder="Ссылка на картинку" required>
+          <span id="error-url" class="popup__error popup__error_type_url"></span>
+        </div>
         <button class="popup__btn-save" type="submit">Создать</button>
       </form>
     </div>

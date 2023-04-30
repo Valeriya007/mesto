@@ -9,15 +9,15 @@ const popupButtonOpenProfile = document.querySelector(".profile__edit-btn");
 const popupButtonOpenCard = document.querySelector(".profile__add-btn");
 const popupButtonCloseProfile = profilePopup.querySelector(".popup__btn-close_profile");
 const popupFormProfile = profilePopup.querySelector(".popup__form_profile");
-const nameInputProfile = profilePopup.querySelector(".popup__text_type_name");
-const infoInputProfile = profilePopup.querySelector(".popup__text_type_info");
+const nameInputProfile = profilePopup.querySelector(".popup__input_type_name");
+const infoInputProfile = profilePopup.querySelector(".popup__input_type_info");
 const popupButtonCloseImage = imagePopup.querySelector(".popup__btn-close_image");
 const popupImage = imagePopup.querySelector(".popup__image");
 const popupImageCaption = imagePopup.querySelector(".popup__image-caption");
 const popupButtonCloseCard = cardPopup.querySelector(".popup__btn-close_card");
 const popupFormCard = cardPopup.querySelector(".popup__form_card");
-const nameInputCard = cardPopup.querySelector(".popup__text_type_name-card");
-const infoInputCard = cardPopup.querySelector(".popup__text_type_info-card");
+const titleInputCard = cardPopup.querySelector(".popup__input_type_title");
+const emailInputCard = cardPopup.querySelector(".popup__input_type_email");
 /*общий попап*/
 function popupOpen(popup) {
   popup.classList.add("popup_opened");
@@ -93,8 +93,8 @@ function popupCloseCard() {
 popupButtonCloseCard.addEventListener('click', popupCloseCard);
 function handleFormCardSubmit(evt) {
   evt.preventDefault();
-  const name = nameInputCard.value;
-  const link = infoInputCard.value;
+  const name = titleInputCard.value;
+  const link = emailInputCard.value;
   const cardData = {
     name,
     link,
@@ -103,3 +103,59 @@ function handleFormCardSubmit(evt) {
   popupCloseCard();
 };
 popupFormCard.addEventListener('submit', handleFormCardSubmit);
+/*______________________________________________________________________________________________________*/
+/*валидация формы карточки*/
+
+function setInputValidState(input, errorElement) {
+  input.classList.remove('popup__input_invalid');
+  errorElement.textContent = '';
+};
+function setInputInvalidState(input, errorElement) {
+  input.classList.add('popup__input_invalid');
+  errorElement.textContent = input.validationMessage;
+};
+function checkInputValidity(input) {
+  const errorElement = document.querySelector(`#error-${input.id}`);
+  if (input.checkValidity()) {
+    setInputValidState(input, errorElement);
+  } else {
+    setInputInvalidState(input, errorElement);
+  }
+};
+function disableButton(button) {
+  button.setAttribute('disabled', '');
+  button.classList.add('popup__btn-save_disabled');
+};
+function enableButton(button) {
+  button.removeAttribute('disabled');
+  button.classList.remove('popup__btn-save_disabled');
+};
+function toggleButtonValidity(forms) {
+  const submitButton = forms.querySelector('.popup__btn-save');
+  if (forms.checkValidity()) {
+    enableButton(submitButton);
+  } else {
+    disableButton(submitButton);
+  }
+};
+function enableValidation() {
+  const forms = document.querySelectorAll('.popup__form');
+  const formsArray = Array.from(forms);
+  formsArray.forEach(function (forms) {
+    forms.addEventListener('submit', function(evt) {
+      evt.preventDefault();
+      toggleButtonValidity(forms);
+    });
+    toggleButtonValidity(forms);
+    const inputs = forms.querySelectorAll('.popup__input');
+    const inputsArray = Array.from(inputs);
+    inputsArray.forEach(function (input) {
+      input.addEventListener('input', () => {
+      checkInputValidity(input);
+      toggleButtonValidity(forms);
+      });
+    });
+  });
+
+};
+enableValidation();

@@ -1,5 +1,4 @@
-.popup__text {
-  max-width: 358px;
+.popup__input {
   width: 100%;
   font-family: 'Inter', 'Arial', sans-serif;
   font-weight: 400;
@@ -8,13 +7,8 @@
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   padding: 0 0 8px;
-  margin-bottom: 30px;
+  outline: none;
 }
 
-@media screen and (max-width: 580px) {
-  .popup__text {
-    max-width: 238px;
-  }
-}
 
 
