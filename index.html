@@ -30,14 +30,13 @@
   <footer class="footer">
     <p class="footer__copyright">&copy;&nbsp;2023. Mesto Russia</p>
   </footer>
-
   <section class="popup popup_content_profile">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_profile" type="button"></button>
       <form class="popup__form popup__form_profile" name="form" novalidate>
         <h3 class="popup__title">Редактировать профиль</h3>
         <div class="popup__field">
-          <input id="username" class="popup__input popup__input_type_name" type="text"
+          <input id="username" class="popup__input popup__input_type_username" type="text"
           name="username" placeholder="Имя" minlength="2" maxlength="40" required>
           <span id="error-username" class="popup__error popup__error_type_username"></span>
         </div>
@@ -50,7 +49,6 @@
       </form>
     </div>
   </section>
-
   <section class="popup popup_content_card">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_card" type="button"></button>
@@ -89,6 +87,7 @@
       </div>
     </article>
   </template>
+  <script src="./scripts/validate.js"></script>
   <script src="./scripts/constants.js"></script>
   <script src="./scripts/index.js"></script>
 </body>
