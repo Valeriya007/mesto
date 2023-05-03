@@ -2,6 +2,10 @@
   max-width: 358px;
   width: 100%;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin-bottom: 33px;
 }
 
 @media screen and (max-width: 580px) {
