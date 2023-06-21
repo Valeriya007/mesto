@@ -24,4 +24,20 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
-export default initialCards;
+
+/*переменная с обьектом для валидации*/
+const config = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__btn-save',
+  inactiveButtonClass: 'popup__btn-save_disabled',
+  inputErrorClass: 'popup__input_invalid',
+  errorClass: 'popup__error_visible'
+};
+
+const configProfile = {
+  profileNameSelector: '.profile__title',
+  profileInfoSelector: '.profile__info'
+};
+
+export {initialCards, config, configProfile};

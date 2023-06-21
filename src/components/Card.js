@@ -1,16 +1,16 @@
 export default class Card {
-  constructor(data, selectorTemplate, popupOpenImage) {
+  constructor(data, selectorTemplate, handleCardClick) {
     this._data = data;
     this._name = data.name;
     this._link = data.link;
     this._selectorTemplate = selectorTemplate;
-    this._popupOpenImage = popupOpenImage;
+    this._handleCardClick = handleCardClick;
   }
 
   /*создаем шаблон карточки*/
   _getTempate() {
     const cardElement = document
-    .querySelector('.card-template')
+    .querySelector(this._selectorTemplate)
     .content.querySelector(".card")
     .cloneNode(true);
 
@@ -46,7 +46,7 @@ export default class Card {
 
   /*функция просмотра фото*/
   _handleOpenImageCard = () => {
-    this._popupOpenImage(this._data);
+    this._handleCardClick(this._data);
   }
 
   /*слушатели событий*/

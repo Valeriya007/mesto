@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./pages/index.css">
   <title>Mesto</title>
 </head>
 <body class="page">
@@ -33,7 +32,7 @@
   <section class="popup popup_content_profile">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_profile" type="button"></button>
-      <form class="popup__form popup__form_profile" name="form" novalidate>
+      <form class="popup__form popup__form_profile" name="formProfile" novalidate>
         <h3 class="popup__title">Редактировать профиль</h3>
         <div class="popup__field">
           <input id="username" class="popup__input popup__input_type_username" type="text"
@@ -52,16 +51,16 @@
   <section class="popup popup_content_card">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_card" type="button"></button>
-      <form class="popup__form popup__form_card" name="form" novalidate>
+      <form class="popup__form popup__form_card" name="formCard" novalidate>
         <h3 class="popup__title">Новое место</h3>
         <div class="popup__field">
           <input id="title" class="popup__input popup__input_type_title" type="text"
-          name="title" placeholder="Название" minlength="2" maxlength="30" required>
+          name="name" placeholder="Название" minlength="2" maxlength="30" required>
           <span id="error-title" class="popup__error popup__error_type_title"></span>
         </div>
         <div class="popup__field">
           <input id="url" class="popup__input popup__input_type_url" type="url"
-          name="url" placeholder="Ссылка на картинку" required>
+          name="link" placeholder="Ссылка на картинку" required>
           <span id="error-url" class="popup__error popup__error_type_url"></span>
         </div>
         <button class="popup__btn-save" type="submit">Создать</button>
@@ -87,6 +86,5 @@
       </div>
     </article>
   </template>
-  <script type="module" src="./scripts/index.js"></script>
 </body>
 </html>
