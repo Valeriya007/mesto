@@ -35,9 +35,24 @@ const config = {
   errorClass: 'popup__error_visible'
 };
 
+const selectorTemplate = '.card-template';
+const popupProfileSelector = ".popup_content_profile";
+const popupCardSelector = '.popup_content_card';
+const popupImageSelector = ".popup_content_image";
+const photoGridSelector = '.photo-grid';
+
 const configProfile = {
   profileNameSelector: '.profile__title',
   profileInfoSelector: '.profile__info'
 };
 
-export {initialCards, config, configProfile};
+export {
+  initialCards,
+  config,
+  selectorTemplate,
+  popupProfileSelector,
+  popupCardSelector,
+  popupImageSelector,
+  photoGridSelector,
+  configProfile
+};

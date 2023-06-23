@@ -4,18 +4,21 @@ import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo.js';
 import PopupWithForm from '../components/PopupWithForm.js';
-import {initialCards, config, configProfile} from '../utils/constants.js';
+import {
+  initialCards,
+  config,
+  selectorTemplate,
+  popupProfileSelector,
+  popupCardSelector,
+  popupImageSelector,
+  photoGridSelector,
+  configProfile
+} from '../utils/constants.js';
 
 import '../pages/index.css';
 
 const popupButtonOpenProfile = document.querySelector(".profile__edit-btn");
 const popupButtonOpenCard = document.querySelector(".profile__add-btn");
-
-const selectorTemplate = '.card-template';
-const popupProfileSelector = ".popup_content_profile";
-const popupCardSelector = '.popup_content_card';
-const popupImageSelector = ".popup_content_image";
-const photoGridSelector = '.photo-grid';
 
 
 /*создание попапа изображения*/
@@ -23,25 +26,32 @@ const photoGridSelector = '.photo-grid';
 const popupImage = new PopupWithImage(popupImageSelector);
 
 
-/*создание экземпляра класса Section с обьектом карточек и функция создания разметки карточек*/
+/*создание карточки*/
+
+const createCard = (element) => {
+  const card = new Card(element, selectorTemplate, popupImage.open);
+  return card.generateCard()
+};
+
+/*создание секции*/
 
 const cardsSection = new Section({
   items: initialCards,
-  renderer: (item) => {
-    const card = new Card(item, selectorTemplate, popupImage.open);
-    return card.generateCard();
+  renderer: (element) => {
+    cardsSection.addItem(createCard(element))
   }
 }, photoGridSelector);
 
 
 /*добавление карточек при загрузке страницы*/
 
-cardsSection.addCard();
+cardsSection.rendererItems();
+
 
 /*создание экземпляра класса PopupWithForm  для формы добавления карточек*/
 
 const popupAddCard = new PopupWithForm(popupCardSelector, (dataCard) => {
-  cardsSection.addItem(dataCard);
+  cardsSection.addItem(createCard(dataCard));
   popupAddCard.close();
 });
 
