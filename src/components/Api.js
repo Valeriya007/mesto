@@ -5,7 +5,6 @@ export default class Api {
     this._authorization = config.headers.authorization;
   }
 
-
   /*проверка на ошибки*/
   _checkResponse(res) {return res.ok ? res.json() : Promise.reject};
 

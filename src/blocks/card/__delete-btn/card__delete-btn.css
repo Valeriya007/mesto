@@ -13,7 +13,7 @@
   position: absolute;
   top: 20px;
   right: 20px;
-
+  outline: 0;
 }
 
 .card__delete-btn:hover {

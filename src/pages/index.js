@@ -25,6 +25,7 @@ import {
 
 import '../pages/index.css';
 
+
 /*Api*/
 
 const api = new Api(apiConfig);
@@ -35,7 +36,10 @@ const api = new Api(apiConfig);
 Promise.all([api.getUserInfo(), api.getInitialCards()])
   .then(([dataUser, dataCard]) => {
     dataCard.forEach(element => element.myId = dataUser._id);
+
     userInfo.setUserInfo({ username: dataUser.name, info: dataUser.about, avatar: dataUser.avatar });
+    userInfo.setId(dataUser._id);
+
     cardsSection.rendererItems(dataCard);
   })
   .catch((error => console.error(`Ошибка ${error}`)))
@@ -65,7 +69,6 @@ const createCard = (element) => {
   return card.generateCard();
 };
 
-
 /*создание секции*/
 
 const cardsSection = new Section({
@@ -75,18 +78,38 @@ const cardsSection = new Section({
 }, photoGridSelector);
 
 
+/*получение формы профиля*/
+
+const userInfo = new UserInfo(configProfile);
+
+
 /*создание Popup добавления карточек*/
 
 const popupAddCard = new PopupWithForm(popupCardSelector, (data) => {
-  Promise.all([api.getUserInfo(), api.addNewCard(data)])
-  .then(([dataUser, dataCard]) => {
-    dataCard.myId = dataUser._id;
+  api.addNewCard(data)
+  .then((dataCard) => {
+    dataCard.myId = userInfo.getId();
+
     cardsSection.addItemPrepend(createCard(dataCard));
     popupAddCard.close();
   })
   .catch((error => console.error(`Ошибка создания новой карточки ${error}`)))
   .finally(() => popupAddCard.getDefaultText())
 });
+
+
+/*создание Popup для формы удаления карточки*/
+
+const deletePopup = new PopupDeleteCard(popupDeleteSelector, ({ card, cardId }) => {
+  api.deleteCard(cardId)
+  .then(() => {
+    card.removeCard();
+    deletePopup.close()
+  })
+  .catch((error) => console.error(`Ошибка удаления карточки ${error}`))
+  .finally(() => deletePopup.getDefaultText())
+});
+
 
 /*создание Popup для формы аватара*/
 
@@ -112,24 +135,6 @@ const popupProfile = new PopupWithForm(popupProfileSelector, (data) => {
   .catch((error => console.error(`Ошибка редактирования профиля ${error}`)))
   .finally(() => popupProfile.getDefaultText())
 });
-
-
-/*создание Popup для формы удаления карточки*/
-
-const deletePopup = new PopupDeleteCard(popupDeleteSelector, ({ card, cardId }) => {
-  api.deleteCard(cardId)
-  .then(() => {
-    card.removeCard();
-    deletePopup.close()
-  })
-  .catch((error) => console.error(`Ошибка удаления карточки ${error}`))
-  .finally(() => deletePopup.getDefaultText())
-});
-
-
-/*получение формы профиля*/
-
-const userInfo = new UserInfo(configProfile);
 
 
 /*создание popup изображения*/
@@ -188,8 +193,3 @@ popupAddCard.setEventlisteners();
 popupProfile.setEventlisteners();
 popupAvatar.setEventlisteners();
 deletePopup.setEventlisteners();
-
-
-
-
-
