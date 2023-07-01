@@ -25,7 +25,6 @@ const initialCards = [
   }
 ];
 
-
 /*переменная с обьектом для валидации*/
 const config = {
   formSelector: '.popup__form',
