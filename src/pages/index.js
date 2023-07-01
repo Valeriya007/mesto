@@ -23,6 +23,7 @@ import {
   configProfile
 } from '../utils/constants.js';
 
+import '../pages/index.css';
 
 /*Api*/
 
