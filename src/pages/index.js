@@ -4,55 +4,125 @@ import Card from '../components/Card.js';
 import FormValidator from '../components/FormValidator.js';
 import UserInfo from '../components/UserInfo.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import PopupDeleteCard from '../components/PopupDeleteCard.js';
+import Api from '../components/Api.js';
 import {
   initialCards,
   config,
+  apiConfig,
+  popupButtonOpenProfile,
+  popupButtonOpenCard,
+  clickAvatar,
   selectorTemplate,
   popupProfileSelector,
   popupCardSelector,
   popupImageSelector,
   photoGridSelector,
+  popupAvatarSelector,
+  popupDeleteSelector,
   configProfile
 } from '../utils/constants.js';
 
-import '../pages/index.css';
 
-const popupButtonOpenProfile = document.querySelector(".profile__edit-btn");
-const popupButtonOpenCard = document.querySelector(".profile__add-btn");
+/*Api*/
+
+const api = new Api(apiConfig);
 
 
-/*создание попапа изображения*/
+/*получение ответа с сервера*/
 
-const popupImage = new PopupWithImage(popupImageSelector);
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+  .then(([dataUser, dataCard]) => {
+    dataCard.forEach(element => element.myId = dataUser._id);
+    userInfo.setUserInfo({ username: dataUser.name, info: dataUser.about, avatar: dataUser.avatar });
+    cardsSection.rendererItems(dataCard);
+  })
+  .catch((error => console.error(`Ошибка ${error}`)))
 
 
 /*создание карточки*/
 
 const createCard = (element) => {
-  const card = new Card(element, selectorTemplate, popupImage.open);
-  return card.generateCard()
+  const card = new Card(element, selectorTemplate,
+   popupImage.open, deletePopup.open,
+   (likeElement, cardId) => {
+    if (likeElement.classList.contains('card__like-btn_active')) {
+      api.deleteLike(cardId)
+      .then(res => {
+        card.toggleLike(res.likes);
+      })
+      .catch((error) => console.error(`Ошибка снятия лайка ${error}`))
+    } else {
+      api.putLike(cardId)
+      .then(res => {
+        card.toggleLike(res.likes);
+      })
+      .catch((error) => console.error(`Ошибка добавления лайка ${error}`))
+      }
+    });
+
+  return card.generateCard();
 };
+
 
 /*создание секции*/
 
 const cardsSection = new Section({
-  items: initialCards,
   renderer: (element) => {
-    cardsSection.addItem(createCard(element))
+    cardsSection.addItemAppend(createCard(element))
   }
 }, photoGridSelector);
 
 
-/*добавление карточек при загрузке страницы*/
+/*создание Popup добавления карточек*/
 
-cardsSection.rendererItems();
+const popupAddCard = new PopupWithForm(popupCardSelector, (data) => {
+  Promise.all([api.getUserInfo(), api.addNewCard(data)])
+  .then(([dataUser, dataCard]) => {
+    dataCard.myId = dataUser._id;
+    cardsSection.addItemPrepend(createCard(dataCard));
+    popupAddCard.close();
+  })
+  .catch((error => console.error(`Ошибка создания новой карточки ${error}`)))
+  .finally(() => popupAddCard.getDefaultText())
+});
+
+/*создание Popup для формы аватара*/
+
+const popupAvatar = new PopupWithForm(popupAvatarSelector, (data) => {
+  api.setNewAvatar(data)
+  .then(res => {
+    userInfo.setUserInfo({ username: res.name, info: res.about, avatar: res.avatar })
+    popupAvatar.close()
+  })
+  .catch((error => console.error(`Ошибка обновления аватара ${error}`)))
+  .finally(() => popupAvatar.getDefaultText())
+});
 
 
-/*создание экземпляра класса PopupWithForm  для формы добавления карточек*/
+/*создание Popup для формы редактирования профиля*/
 
-const popupAddCard = new PopupWithForm(popupCardSelector, (dataCard) => {
-  cardsSection.addItem(createCard(dataCard));
-  popupAddCard.close();
+const popupProfile = new PopupWithForm(popupProfileSelector, (data) => {
+  api.setUserInfo(data)
+  .then(res => {
+    userInfo.setUserInfo({ username: res.name, info: res.about, avatar: res.avatar })
+    popupProfile.close()
+  })
+  .catch((error => console.error(`Ошибка редактирования профиля ${error}`)))
+  .finally(() => popupProfile.getDefaultText())
+});
+
+
+/*создание Popup для формы удаления карточки*/
+
+const deletePopup = new PopupDeleteCard(popupDeleteSelector, ({ card, cardId }) => {
+  api.deleteCard(cardId)
+  .then(() => {
+    card.removeCard();
+    deletePopup.close()
+  })
+  .catch((error) => console.error(`Ошибка удаления карточки ${error}`))
+  .finally(() => deletePopup.getDefaultText())
 });
 
 
@@ -61,12 +131,9 @@ const popupAddCard = new PopupWithForm(popupCardSelector, (dataCard) => {
 const userInfo = new UserInfo(configProfile);
 
 
-/*создание экземпляра класса PopupWithForm для формы редактирования профиля*/
+/*создание popup изображения*/
 
-const popupProfile = new PopupWithForm(popupProfileSelector, (dataProfile) => {
-  userInfo.setUserInfo(dataProfile);
-  popupProfile.close();
-});
+const popupImage = new PopupWithImage(popupImageSelector);
 
 
 /*создание экземпляров класса FormValidator для обеих форм*/
@@ -81,18 +148,19 @@ Array.from(document.querySelectorAll(config.formSelector)).forEach(item => {
 });
 
 
-/*функция открытия попапа редактирования профиля*/
+/*функция открытия popup редактирования профиля*/
 
 function popupOpenProfile() {
   forms['formProfile'].resetValidationForm();
 
   popupProfile.setInputValues(userInfo.getUserInfo());
+
   popupProfile.open();
 };
 popupButtonOpenProfile.addEventListener('click', popupOpenProfile);
 
 
-/*функция открытия попапа добавления карточки*/
+/*функция открытия popup добавления карточки*/
 
 function popupOpenCard() {
   forms['formCard'].resetValidationForm();
@@ -102,10 +170,25 @@ function popupOpenCard() {
 popupButtonOpenCard.addEventListener('click', popupOpenCard);
 
 
+/*функция открытия popup аватара*/
+
+function openAvatar() {
+  forms['formAvatar'].resetValidationForm();
+
+  popupAvatar.open();
+};
+clickAvatar.addEventListener('click', openAvatar);
+
+
 /*слушатели событий*/
 
 popupImage.setEventlisteners();
 popupAddCard.setEventlisteners();
 popupProfile.setEventlisteners();
+popupAvatar.setEventlisteners();
+deletePopup.setEventlisteners();
+
+
+
 
 

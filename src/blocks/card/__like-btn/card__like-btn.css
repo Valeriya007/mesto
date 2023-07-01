@@ -10,6 +10,7 @@
   cursor: pointer;
   background-size: 22px 22px;
   padding: 0;
+  margin-bottom: 3px;
 }
 
 .card__like-btn:hover {

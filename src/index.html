@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./pages/index.css">
   <title>Mesto</title>
 </head>
 <body class="page">
@@ -12,19 +13,23 @@
   <main class="content">
     <section class="profile">
       <div class="profile__container">
-        <img src="<%=require('./images/jakivkusto.jpg')%>" alt="Фото Жака-Ива Кусто" class="profile__avatar">
+        <div class="profile__avatar">
+          <img src="#" alt="Аватар профиля" class="profile__image">
+        </div>
         <div class="profile__content">
           <div class="profile__name">
-            <h1 class="profile__title">Жак-Ив Кусто</h1>
+            <h1 class="profile__title"></h1>
             <button class="profile__edit-btn" type="button"></button>
           </div>
-          <p class="profile__info">Исследователь океана</p>
+          <p class="profile__info"></p>
         </div>
       </div>
       <button class="profile__add-btn" type="button"></button>
     </section>
+
     <section class="photo-grid" aria-label="Карточки с фотографиями">
     </section>
+
   </main>
   <footer class="footer">
     <p class="footer__copyright">&copy;&nbsp;2023. Mesto Russia</p>
@@ -32,7 +37,7 @@
   <section class="popup popup_content_profile">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_profile" type="button"></button>
-      <form class="popup__form popup__form_profile" name="formProfile" novalidate>
+      <form class="popup__form" name="formProfile" novalidate>
         <h3 class="popup__title">Редактировать профиль</h3>
         <div class="popup__field">
           <input id="username" class="popup__input popup__input_type_username" type="text"
@@ -51,7 +56,7 @@
   <section class="popup popup_content_card">
     <div class="popup__container">
       <button class="popup__btn-close popup__btn-close_card" type="button"></button>
-      <form class="popup__form popup__form_card" name="formCard" novalidate>
+      <form class="popup__form" name="formCard" novalidate>
         <h3 class="popup__title">Новое место</h3>
         <div class="popup__field">
           <input id="title" class="popup__input popup__input_type_title" type="text"
@@ -76,15 +81,42 @@
       </figure>
     </div>
   </section>
+  <section class="popup popup_content_avatar">
+    <div class="popup__container ">
+      <button class="popup__btn-close popup__btn-close_avatar" type="button"></button>
+      <form name="formAvatar" class="popup__form" novalidate>
+        <h3 class="popup__title">Обновить аватар</h3>
+        <div class="popup__field">
+          <input id="avatar" name="avatar" type="url" class="popup__input popup__input_type_url"
+          placeholder="Ссылка на картинку" required>
+          <span id="error-avatar" class="popup__error popup__error_type_avatar"></span>
+        </div>
+        <button class="popup__btn-save" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </section>
+  <section class="popup popup_content_delete">
+    <div class="popup__container">
+      <button class="popup__btn-close popup__btn-close_delete" type="button"></button>
+      <form name="deleteCard" class="popup__form" novalidate>
+        <h3 class="popup__title popup__title_type_delete">Вы уверены?</h3>
+        <button class="popup__btn-save" type="submit">Да</button>
+      </form>
+    </div>
+  </section>
   <template class="card-template">
     <article class="card">
       <button class="card__delete-btn" type="button"></button>
       <img src="#" alt="#" class="card__image">
       <div class="card__info">
         <h2 class="card__title"></h2>
-        <button class="card__like-btn" type="button"></button>
+        <div class="card__like-group">
+          <button class="card__like-btn" type="button"></button>
+          <span class="card__like-counter"></span>
+        </div>
       </div>
     </article>
   </template>
+  <script type="module" src="./pages/index.js"></script>
 </body>
 </html>
